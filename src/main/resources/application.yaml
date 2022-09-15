@@ -1,0 +1,105 @@
+server:
+  port: 1030
+
+management:
+  endpoints: 
+    web:
+      exposure: 
+        include: "health, info"
+  info:
+    java:
+      enabled: true
+    env:
+      enabled: true
+
+info:
+  application: erp-gateway-service
+  label: ERP Gateway Service
+  version: 1.0.0
+  state: Development
+
+eureka:
+  instance:
+    hostname: 192.168.1.9
+  client:
+    serviceUrl:
+      defaultZone: http://richard:richard@${eureka.instance.hostname}:1000/eureka/
+
+logging:
+  level:
+      org:
+        springframework:
+          security:
+            web: DEBUG
+  pattern: 
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+              
+spring:
+  application:
+    name: erp-gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: erp-authentication-service
+        uri: lb://erp-authentication-service
+        predicates:
+        - Path=/erp-authentication/**
+        filters:
+        - RewritePath=/erp-authentication/(?<path>.*), /$\{path}
+      - id: openapi
+        uri: http://localhost:${server.port}
+        predicates:
+        - Path=/v3/api-docs/**
+        filters:
+        - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: erp-authentication
+        url: /v3/api-docs/erp-authentication
+
+--- 
+spring:
+  config:
+    activate:
+      on-profile:
+      - localhost
+eureka:
+  instance:
+    hostname: 127.0.0.1
+  client:
+    serviceUrl:
+      defaultZone: http://richard:richard@${eureka.instance.hostname}:1000/eureka/
+
+--- 
+spring:
+  config:
+    activate:
+      on-profile:
+      - development
+eureka:
+  instance:
+    hostname: richardvu.myddns.me
+  client:
+    serviceUrl:
+      defaultZone: http://richard:richard@${eureka.instance.hostname}:1000/eureka/
+
+--- 
+spring:
+  config:
+    activate:
+      on-profile:
+      - production
+eureka:
+  instance:
+    hostname: 192.168.1.9
+  client:
+    serviceUrl:
+      defaultZone: http://richard:richard@${eureka.instance.hostname}:1000/eureka/
+springdoc:
+  swagger-ui:
+    enabled: false
