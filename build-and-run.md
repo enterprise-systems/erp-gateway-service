@@ -28,9 +28,9 @@ docker build -t erp-gateway-service:latest -f Dockerfile .
 
 docker run -it --restart always --name erp-gateway-service-localhost -p 1030:1030 -e SPRING_PROFILES_ACTIVE=localhost erp-gateway-service:latest
 
-docker run -it --restart always --name erp-gateway-service-development -p 1031:1030 -e SPRING_PROFILES_ACTIVE=development erp-gateway-service:latest
+docker run -it --restart always --name erp-gateway-service-development -p 1030:1030 -e SPRING_PROFILES_ACTIVE=development erp-gateway-service:latest
 
-docker run -it --restart always --name erp-gateway-service-production -p 1032:1030 -e SPRING_PROFILES_ACTIVE=production erp-gateway-service:latest
+docker run -it --restart always --name erp-gateway-service-production -p 1030:1030 -e SPRING_PROFILES_ACTIVE=production erp-gateway-service:latest
 
 #### SPRING_PROFILES_ACTIVE (env)
 
