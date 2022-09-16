@@ -49,6 +49,12 @@ spring:
         - Path=/erp-authentication/**
         filters:
         - RewritePath=/erp-authentication/(?<path>.*), /$\{path}
+      - id: spring-boot-core-essential-service
+        uri: lb://spring-boot-core-essential-service
+        predicates:
+        - Path=/spring-boot-core-essential/**
+        filters:
+        - RewritePath=/spring-boot-core-essential/(?<path>.*), /$\{path}
       - id: openapi
         uri: http://localhost:${server.port}
         predicates:
@@ -61,6 +67,8 @@ springdoc:
     urls:
       - name: erp-authentication
         url: /v3/api-docs/erp-authentication
+      - name: spring-boot-core-essential
+        url: /v3/api-docs/spring-boot-core-essential
 
 --- 
 spring:
