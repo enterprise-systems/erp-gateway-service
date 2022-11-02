@@ -91,7 +91,7 @@ spring:
       - development
 eureka:
   instance:
-    hostname: richardvu.myddns.me
+    hostname: host.docker.internal
   client:
     serviceUrl:
       defaultZone: http://richard:richard@${eureka.instance.hostname}:1000/eureka/
